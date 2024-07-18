@@ -8,10 +8,9 @@ const {
   failure
 } = require('../../utilis/response');
 
-router.get('/', async function(req, res, next) {
+router.get('/', async function (req, res, next) {
   try {
     const query = req.query
-
     const condition = {
       order: [['id', 'DESC']]
     }
@@ -23,106 +22,64 @@ router.get('/', async function(req, res, next) {
       }
     }
     const articles = await Article.findAll(condition);
-    res.json({
-      status: true,
-      message: 'found an article',
-      data: {
-        articles
-      }
-    });
-  } catch (error) {
-    failure(req, error)
-  }
 
+    success(res, 'all articles fetched', data = { articles })
+  } catch (error) {
+    failure(res, error)
+  }
 });
 
-router.get('/:id', async function(req, res, next) {
+router.get('/:id', async function (req, res, next) {
   try {
-    const article = await getArticle(req, res)
+    const article = await getArticle(req)
     success(res, "Found an article!", article)
   } catch (error) {
-    failure(req, res, error)
+    failure(res, error)
   }
 })
 
-router.post('/', async function(req, res, next) {
+router.post('/', async function (req, res, next) {
   try {
     const body = filterBody(req)
-
     const article = await Article.create(body);
-    
-    res.status(201).json({
-      status: true,
-      message: 'article created with success!',
-      data: article
-    })
+
+    success(res, 'article created with success!', data = { article })
   } catch (error) {
-    failure(req, error)
+    failure(res, error)
   }
 });
 
-router.delete('/:id', async function(req, res, next) {
+router.delete('/:id', async function (req, res, next) {
   try {
-    const { id } = req.params;
+    const article = await getArticle(req)
+    await article.destroy()
 
-    const article = await Article.findByPk(id);
-    
-    if (article) {
-      await article.destroy()
-
-      res.json({
-        status: true,
-        message: 'article deleted with success!',
-      })
-    } else {
-      res.status(404).json({
-        status: false,
-        message: 'article not found',
-      })
-    }
+    success(res, 'article deleted', data = { article })
   } catch (error) {
-    failure(req, error)
+    failure(res, error)
   }
 });
 
-router.put('/:id', async function(req, res, next) {
+router.put('/:id', async function (req, res, next) {
   try {
-    const { id } = req.params;
+    const article = await getArticle(req)
+    await article.update(req.body)
 
-    const article = await Article.findByPk(id);
-    
-    if (article) {
-      await article.update(req.body )
-
-      res.json({
-        status: true,
-        message: 'article updated with success!',
-      })
-    } else {
-      res.status(404).json({
-        status: false,
-        message: 'article not found',
-      })
-    }
+    success(res, 'article updated with success!', data = { article })
   } catch (error) {
-    failure(req, error)
+    failure(res, error)
   }
 });
 
-getArticle = async (req, res) => {
-  console.log("req.params")
-  console.log(req.params)
+async function getArticle(req) {
   const { id } = req.params;
-  try {
-    const article = await Article.findByPk(id);
-    if (!article) {
-      throw new NotFoundError
-    }
-    return article
-  } catch (error) {
-    throw new failure(res, error)
+
+  const article = await Article.findByPk(id);
+  if (!article) {
+    throw new NotFoundError(`${id} ce titre n'existe pas!`)
   }
 
+  return article
 }
 
 filterBody = (req) => {
