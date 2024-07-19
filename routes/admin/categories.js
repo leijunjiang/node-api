@@ -76,7 +76,7 @@ async function getCategory(req) {
 
   const category = await Category.findByPk(id);
   if (!category) {
-    throw new NotFoundError(`${id} ce titre n'existe pas!`)
+    throw new NotFoundError(`${id} ce category n'existe pas!`)
   }
 
   return category
