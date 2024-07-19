@@ -16,7 +16,7 @@ function success(res, message, data = {}, code = 200) {
 function failure(res, error) {
   if (error.name === 'SequelizeValidationError') {
     const errors = error.errors.map(e => e.message);
-     res.status(400).json({
+    return res.status(400).json({
       status: false,
       message: 'request parameters errors',
       errors
@@ -24,14 +24,14 @@ function failure(res, error) {
   }
 
   if (error.name === 'NotFoundError') {
-    res.status(400).json({
+    return res.status(400).json({
       status: false,
       message: 'resources not exists',
       errors : [error.message]
     });
   }
 
-   res.status(500).json({
+  return res.status(500).json({
     status: false,
     message: 'server error',
     errors: [error.message]
