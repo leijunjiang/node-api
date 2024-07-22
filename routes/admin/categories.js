@@ -3,10 +3,10 @@ const { Op } = require('sequelize');
 const router = express.Router();
 const { Category, Course } = require('../../models')
 const {
-  NotFoundError,
   success,
   failure
-} = require('../../utilis/response');
+} = require('../../utilis/responses');
+const { NotFoundError } = require('../../utils/errors')
 
 router.get('/', async function (req, res, next) {
   try {
@@ -57,7 +57,7 @@ router.delete('/:id', async function (req, res, next) {
     if (count > 0) {
       throw new Error('unable to delete due to its associated courses')
     }
-    
+
     await category.destroy()
 
     success(res, 'category deleted', data = { category })

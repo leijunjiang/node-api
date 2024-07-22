@@ -4,21 +4,23 @@ const { User } = require('../../models')
 const { Sequelize, Op } = require('sequelize');
 // const { sql } = require('@sequelize/core');
 const {
-  NotFoundError,
   success,
   failure
-} = require('../../utilis/response');
+} = require('../../utilis/responses');
+const { NotFoundError } = require('../../utils/errors')
+
+const { NotFoundError } = require('../utils/errors')
 
 router.get('/sex', async function (req, res, next) {
   try {
-    const male = await User.count({ where: {sex: 0}});
-    const female = await User.count({ where: {sex: 1}})
-    const unknown = await User.count({ where: {sex: 2}})
+    const male = await User.count({ where: { sex: 0 } });
+    const female = await User.count({ where: { sex: 1 } })
+    const unknown = await User.count({ where: { sex: 2 } })
 
     const data = [
-      { value: male, name: 'male'},
-      { value: female, name: 'female'},
-      { value: unknown, name: 'unknown'}
+      { value: male, name: 'male' },
+      { value: female, name: 'female' },
+      { value: unknown, name: 'unknown' }
     ]
     success(res, 'all sexes fetched', data)
   } catch (error) {
@@ -48,7 +50,7 @@ router.get('/user', async function (req, res, next) {
       values: []
     }
 
-    result.forEach( item => {
+    result.forEach(item => {
       data.months.push(item.month);
       data.values.push(item.values);
     })

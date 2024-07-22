@@ -3,10 +3,10 @@ const { Op } = require('sequelize');
 const router = express.Router();
 const { Article } = require('../../models')
 const {
-  NotFoundError,
   success,
   failure
-} = require('../../utilis/response');
+} = require('../../utilis/responses');
+const { NotFoundError } = require('../../utils/errors')
 
 router.get('/', async function (req, res, next) {
   try {

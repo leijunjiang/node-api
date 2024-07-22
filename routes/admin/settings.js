@@ -2,15 +2,14 @@ const express = require('express');
 const router = express.Router();
 const { Setting } = require('../../models')
 const {
-  NotFoundError,
   success,
   failure
-} = require('../../utilis/response');
+} = require('../../utilis/responses');
+const { NotFoundError } = require('../../utils/errors')
 
 
 
 router.get('/', async function (req, res, next) {
-  console.log('//////////////////')
   try {
     const setting = await getSetting()
     success(res, "Found an setting!", setting)
