@@ -2,6 +2,9 @@
 const {
   Model
 } = require('sequelize');
+
+const bcrypt = require('bcryptjs')
+
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     /**
@@ -10,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      models.User.hasMany(models.Course, { as: 'courses' });
     }
   }
   User.init({
@@ -29,7 +32,22 @@ module.exports = (sequelize, DataTypes) => {
         }
       }
     },
-    password: DataTypes.STRING,
+    password: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notNull: { msg: 'password should not be null'},
+        notEmpty: { msg: 'password should not be empty'}
+      },
+      set(value) {
+        if (value.length >= 6 && value.length <= 45) {
+          this.setDataValue('password', bcrypt.hashSync(value, 10));
+        } else {
+          throw new Error('password length between 6 - 45 .')
+        }
+      }
+    },
+    username: DataTypes.STRING,
     nickname: DataTypes.STRING,
     sex: DataTypes.TINYINT,
     company: DataTypes.STRING,

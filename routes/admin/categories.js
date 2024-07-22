@@ -1,7 +1,7 @@
 const express = require('express');
 const { Op } = require('sequelize');
 const router = express.Router();
-const { Category } = require('../../models')
+const { Category, Course } = require('../../models')
 const {
   NotFoundError,
   success,
@@ -52,6 +52,12 @@ router.post('/', async function (req, res, next) {
 router.delete('/:id', async function (req, res, next) {
   try {
     const category = await getCategory(req)
+
+    const count = await Course.count({ where: { categoryId: req.params.id }})
+    if (count > 0) {
+      throw new Error('unable to delete due to its associated courses')
+    }
+    
     await category.destroy()
 
     success(res, 'category deleted', data = { category })
@@ -74,7 +80,16 @@ router.put('/:id', async function (req, res, next) {
 async function getCategory(req) {
   const { id } = req.params;
 
-  const category = await Category.findByPk(id);
+  const condition = {
+    include: [
+      {
+        model: Course,
+        as: 'courses',
+      }
+    ]
+  }
+
+  const category = await Category.findByPk(id, condition);
   if (!category) {
     throw new NotFoundError(`${id} ce category n'existe pas!`)
   }

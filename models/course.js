@@ -10,12 +10,40 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      models.Course.belongsTo(models.Category, { as: 'category' });
+      models.Course.belongsTo(models.User, { as: 'user' });
+      models.Course.hasMany(models.Chapter, { as: 'chapters' });
     }
   }
   Course.init({
-    categoryId: DataTypes.INTEGER,
-    userId: DataTypes.INTEGER,
+    categoryId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        notNull: { msg: 'category ID should not be null' },
+        notEmpty: { msg: 'category ID should not be empty' },
+        async isPresent(value) {
+          const category = await sequelize.models.Category.findByPk(value)
+          if (!category) {
+            throw new Error(`ID ${value}, not exists`)
+          }
+        }
+      }
+    },
+    userId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        notNull: { msg: 'user ID should not be null' },
+        notEmpty: { msg: 'user ID should not be empty' },
+        async isPresent(value) {
+          const user = await sequelize.models.User.findByPk(value)
+          if (!user) {
+            throw new Error(`ID ${value}, not exists`)
+          }
+        }
+      }
+    },
     name: DataTypes.STRING,
     image: DataTypes.STRING,
     recommended: DataTypes.BOOLEAN,

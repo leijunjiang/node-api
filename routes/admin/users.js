@@ -77,8 +77,10 @@ async function getUser(req) {
 
 filterBody = (req) => {
   return {
-    name: req.body.email,
+    email: req.body.email,
     password: req.body.password,
+    username: req.body.username,
+    sex: req.body.sex,
     role: req.body.role,
   }
 }
