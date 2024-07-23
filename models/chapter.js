@@ -16,6 +16,7 @@ module.exports = (sequelize, DataTypes) => {
       models.Chapter.belongsTo(models.Course, { as: 'course' })
     }
   }
+
   Chapter.init({
     courseId: DataTypes.INTEGER,
     title: DataTypes.STRING,
