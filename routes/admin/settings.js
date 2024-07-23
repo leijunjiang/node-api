@@ -5,7 +5,7 @@ const {
   success,
   failure
 } = require('../../utilis/responses');
-const { NotFoundError } = require('../../utils/errors')
+const { NotFoundError } = require('../../utilis/errors')
 
 
 
