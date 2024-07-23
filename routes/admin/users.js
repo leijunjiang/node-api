@@ -75,7 +75,7 @@ async function getUser(req) {
   return user
 }
 
-filterBody = (req) => {
+const filterBody = (req) => {
   return {
     email: req.body.email,
     password: req.body.password,

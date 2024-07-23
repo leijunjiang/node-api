@@ -97,7 +97,7 @@ async function getCategory(req) {
   return category
 }
 
-filterBody = (req) => {
+const filterBody = (req) => {
   return {
     name: req.body.name,
     rank: req.body.rank

@@ -82,7 +82,7 @@ async function getArticle(req) {
   return article
 }
 
-filterBody = (req) => {
+const filterBody = (req) => {
   return {
     title: req.body.title,
     content: req.body.content

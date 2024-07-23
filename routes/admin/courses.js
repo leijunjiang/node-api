@@ -13,7 +13,6 @@ router.get('/', async function (req, res, next) {
     const query = req.query
     const condition = getCondition()
 
-    console.log(query)
     if (query.categoryId) {
       condition.where = {
         categoryId: {
@@ -55,7 +54,6 @@ router.get('/', async function (req, res, next) {
       }
     }
 
-    console.log(condition)
     const course = await Course.findAll(condition);
 
     success(res, 'all course fetched', data = { course })
@@ -76,6 +74,7 @@ router.get('/:id', async function (req, res, next) {
 router.post('/', async function (req, res, next) {
   try {
     const body = filterBody(req)
+    body.userId = req.user.id;
     const course = await Course.create(body);
 
     success(res, 'course created with success!', data = { course })
@@ -123,10 +122,9 @@ async function getCourse(req) {
   return course
 }
 
-filterBody = (req) => {
+const filterBody = (req) => {
   return {
     categoryId: req.body.categoryId,
-    userId: req.body.userId,
     name: req.body.name,
     image: req.body.image,
     recommended: req.body.recommended,
@@ -135,7 +133,7 @@ filterBody = (req) => {
   }
 }
 
-getCondition = () => {
+const getCondition = () => {
   return {
     attributes: { exclude: ['CategoryId', 'UserId'] },
       include: [

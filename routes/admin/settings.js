@@ -39,7 +39,7 @@ async function getSetting() {
   return setting
 }
 
-filterBody = (req) => {
+const filterBody = (req) => {
   return {
     name: req.body.name,
     icp: req.body.icp,

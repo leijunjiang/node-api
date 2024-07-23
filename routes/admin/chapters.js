@@ -73,7 +73,7 @@ async function getChapters(req) {
   return chapter
 }
 
-filterBody = (req) => {
+const filterBody = (req) => {
   return {
     courseId: req.body.courseId,
     title: req.body.title,
@@ -83,7 +83,7 @@ filterBody = (req) => {
   }
 }
 
-getCondition = () => {
+const getCondition = () => {
   return {
     attributes: { exclude: ['CourseId'] },
       include: [

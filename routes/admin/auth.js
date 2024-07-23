@@ -17,7 +17,6 @@ router.post('/sign_in', async function (req, res, next) {
   try {
     const { login, password } = req.body;
 
-    console.log(login)
     if(!login) {
       throw new BadRequestError('email / user doit etre la')
     }

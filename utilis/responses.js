@@ -32,9 +32,24 @@ function failure(res, error) {
     });
   }
 
+  if (error.name === 'JsonWebTokenError') {
+    return res.status(401).json({
+      status: false,
+      message: 'authorization failed',
+      errors : ["you token is false"]
+    });
+  }
+
+  if (error.name === 'TokenExpiredError') {
+    return res.status(401).json({
+      status: false,
+      message: 'authorization failed',
+      errors : ["you token expired"]
+    });
+  }
 
   if (error.name === 'NotFoundError') {
-    return res.status(400).json({
+    return res.status(404).json({
       status: false,
       message: 'resources not exists',
       errors : [error.message]
