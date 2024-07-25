@@ -13,6 +13,7 @@ const coursesRouter = require('./routes/courses');
 const chaptersRouter = require('./routes/chapters');
 const settingsRouter = require('./routes/settings');
 const searchRouter = require('./routes/search');
+const authRouter = require('./routes/auth');
 
 const adminArticlesRouter = require("./routes/admin/articles")
 const adminCategoriesRouter = require("./routes/admin/categories")
@@ -38,6 +39,7 @@ app.use('/courses', coursesRouter);
 app.use('/chapters', chaptersRouter);
 app.use('/settings', settingsRouter);
 app.use('/search', searchRouter);
+app.use('/auth', authRouter);
 
 app.use('/admin/articles',adminAuth, adminArticlesRouter);
 app.use('/admin/categories',adminAuth,  adminCategoriesRouter);
