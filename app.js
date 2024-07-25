@@ -11,6 +11,8 @@ const usersRouter = require('./routes/users');
 const categoriesRouter = require('./routes/categories');
 const coursesRouter = require('./routes/courses');
 const chaptersRouter = require('./routes/chapters');
+const settingsRouter = require('./routes/settings');
+const searchRouter = require('./routes/search');
 
 const adminArticlesRouter = require("./routes/admin/articles")
 const adminCategoriesRouter = require("./routes/admin/categories")
@@ -34,6 +36,8 @@ app.use('/users', usersRouter);
 app.use('/categories', categoriesRouter);
 app.use('/courses', coursesRouter);
 app.use('/chapters', chaptersRouter);
+app.use('/settings', settingsRouter);
+app.use('/search', searchRouter);
 
 app.use('/admin/articles',adminAuth, adminArticlesRouter);
 app.use('/admin/categories',adminAuth,  adminCategoriesRouter);
